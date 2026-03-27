@@ -1,7 +1,7 @@
 const background = document.getElementById('background');
 
 async function getBackground() { 
-    const url = 'https://api.nasa.gov/planetary/apod?api_key=EblNHd3g4XPgItOg5cI3HzeouDxopd3nZcqfRMPT';
+    const url = 'https://api.nasa.gov/planetary/apod?api_key=api.env';
     
     try{
         const response = await fetch(url);
