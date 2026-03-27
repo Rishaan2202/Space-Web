@@ -10,7 +10,7 @@ async function getBackground() {
         }   
 
         const result = await response.json();
-        console.log(result);
+        console.log(result);    
 
         if (result.media_type !== 'image') {
             console.log(`API returned media type ${result.media_type}, instead of image`);
