@@ -1,7 +1,7 @@
 const background = document.getElementById('background');
 
 async function getBackground() { 
-    const url = 'https://dog.ceo/api/breeds/image/random';
+    const url = 'https://api.nasa.gov/planetary/apod?api_key=EblNHd3g4XPgItOg5cI3HzeouDxopd3nZcqfRMPT';
     
     try{
         const response = await fetch(url);
