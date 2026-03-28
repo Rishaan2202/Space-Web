@@ -1,7 +1,7 @@
 const background = document.getElementById('background');
 
 async function getBackground() { 
-    const url = 'https://api.nasa.gov/planetary/apod?api_key=EblNHd3g4XPgItOg5cI3HzeouDxopd3nZcqfRMPT';
+    const url = 'https://dog.ceo/api/breeds/image/random';
     
     try{
         const response = await fetch(url);
@@ -12,13 +12,10 @@ async function getBackground() {
         const result = await response.json();
         console.log(result);    
 
-        if (result.media_type !== 'image') {
-            console.log(`API returned media type ${result.media_type}, instead of image`);
-            return null;
-        }
+        return result.message;
+    }
 
-        return result.url;
-    } catch (error) {
+    catch (error) {
         console.error('Error fetching background image:', error);
         return null;
     }
@@ -45,20 +42,22 @@ setInterval(function() {
 let unixTime = dateObject.getTime();
 let timeZoneOffset = dateObject.getTimezoneOffset();
 
+console.log(timeZoneOffset);
+
 function millisInDay() {
-    return (unixTime % (24 * 60 * 60 * 1000))+timeZoneOffset;
+    return unixTime % (24 * 60 * 60 * 1000);
 }
 
 function secondsInDay() {
-    return (millisInDay() / 1000);
+    return ((Math.floor(millisInDay() / 1000))%(24*60*60))%60;
 }
 
 function minutesInDay() {
-    return (millisInDay() / 1000 / 60);
-}
+    return ((Math.floor(millisInDay() / 1000 / 60))%60)+timeZoneOffset%60;
+}   
 
 function hoursInDay() {
-    return (millisInDay() / 1000 / 60 / 60);
+    return Math.floor(millisInDay() / 1000 / 60 / 60)+Math.floor(timeZoneOffset/60);
 }
 
 millisInDay();
@@ -73,4 +72,23 @@ console.log(minutesInDay());
 hoursInDay();
 console.log(hoursInDay());
 
-}, 1000);
+let currentHours = hoursInDay();
+let currentMinutes = minutesInDay();
+let currentSeconds = secondsInDay();  
+
+if (hoursInDay() < 10) {
+    currentHours = "0" + hoursInDay();
+}
+
+if (minutesInDay() < 10) {
+    currentMinutes = "0" + minutesInDay();
+}
+
+if (secondsInDay() < 10) {
+    currentSeconds = "0" + secondsInDay();
+}
+
+const timeDiv = document.getElementById('time');
+timeDiv.innerText = currentHours + ":" + currentMinutes + ":" + currentSeconds;
+
+}, 1000);  
