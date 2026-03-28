@@ -97,6 +97,10 @@ if (minutesInDay() < 0) {
     currentMinutes = 60 + minutesInDay();
 }
 
+if (minutesInDay() > 30) {
+    currentHours--;
+}
+
 if (secondsInDay() < 10) {
     currentSeconds = "0" + secondsInDay();
 }
@@ -105,3 +109,47 @@ const timeDiv = document.getElementById('time');
 timeDiv.innerText = currentHours + ":" + currentMinutes + ":" + currentSeconds;
 
 }, 1000);
+
+navigator.geolocation.getCurrentPosition(success, error);
+
+    function success(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        console.log('Latitude: ' + latitude + ', Longitude: ' + longitude);
+    }
+
+    function error() {
+        console.error('Unable to retrieve your location');
+        getElementById('whether').innerText = 'Unable to retrieve your location';
+    }
+
+async function getWeather(latitude, longitude) {
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&current_weather=true&temperature_unit=celcius&wind_speed_unit=kmh`;
+    whetherDiv = document.getElementById('whether');
+    
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Response Status: ${response.status}');
+        }
+        const result = await response.json();
+        console.log(result);
+        console.log(result.current_weather.precipitation);
+        console.log(result.current_weather.temperature);
+        console.log(result.current_weather.wind_speed); 
+
+        let precipitation = result.current_weather.precipitation;
+        let temperature = result.current_weather.temperature;
+        let windSpeed = result.current_weather.wind_speed;
+
+        whetherDiv.innerText = `${precipitation}% ${temperature}°C ${windSpeed} KMH`; 
+        
+        return result;
+    }
+    
+    catch (error) {
+        console.error('Error fetching weather data:', error);
+        whetherDiv.innerText = 'Error fetching weather data';
+        return null; 
+    }
+}
