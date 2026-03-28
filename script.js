@@ -1,7 +1,7 @@
 const background = document.getElementById('background');
 
 async function getBackground() { 
-    const url = 'https://dog.ceo/api/breeds/image/random';
+    const url = 'https://api.nasa.gov/planetary/apod?api_key=EblNHd3g4XPgItOg5cI3HzeouDxopd3nZcqfRMPT';
     
     try{
         const response = await fetch(url);
@@ -42,22 +42,20 @@ setInterval(function() {
 let unixTime = dateObject.getTime();
 let timeZoneOffset = dateObject.getTimezoneOffset();
 
-console.log(timeZoneOffset);
-
 function millisInDay() {
-    return unixTime % (24 * 60 * 60 * 1000);
+    return (unixTime % (24 * 60 * 60 * 1000))+timeZoneOffset;
 }
 
 function secondsInDay() {
-    return ((Math.floor(millisInDay() / 1000))%(24*60*60))%60;
+    return (millisInDay() / 1000);
 }
 
 function minutesInDay() {
-    return ((Math.floor(millisInDay() / 1000 / 60))%60)+timeZoneOffset%60;
-}   
+    return (millisInDay() / 1000 / 60);
+}
 
 function hoursInDay() {
-    return Math.floor(millisInDay() / 1000 / 60 / 60)+Math.floor(timeZoneOffset/60);
+    return (millisInDay() / 1000 / 60 / 60);
 }
 
 millisInDay();
@@ -72,23 +70,4 @@ console.log(minutesInDay());
 hoursInDay();
 console.log(hoursInDay());
 
-let currentHours = hoursInDay();
-let currentMinutes = minutesInDay();
-let currentSeconds = secondsInDay();  
-
-if (hoursInDay() < 10) {
-    currentHours = "0" + hoursInDay();
-}
-
-if (minutesInDay() < 10) {
-    currentMinutes = "0" + minutesInDay();
-}
-
-if (secondsInDay() < 10) {
-    currentSeconds = "0" + secondsInDay();
-}
-
-const timeDiv = document.getElementById('time');
-timeDiv.innerText = currentHours + ":" + currentMinutes + ":" + currentSeconds;
-
-}, 1000);  
+}, 1000);
