@@ -1,7 +1,7 @@
 const background = document.getElementById('background');
 
 async function getBackground() { 
-    const url = 'https://api.nasa.gov/planetary/apod?api_key=api-key-here';
+    const url = 'https://dog.ceo/api/breeds/image/random';
     
     try{
         const response = await fetch(url);
@@ -37,6 +37,7 @@ window.onload = function () {
 let dateObject = new Date();
 
 setInterval(function() {
+    
  dateObject = new Date();
 
 let unixTime = dateObject.getTime();
@@ -57,7 +58,7 @@ function minutesInDay() {
 }   
 
 function hoursInDay() {
-    return Math.floor(millisInDay() / 1000 / 60 / 60)+Math.floor(timeZoneOffset/60);
+    return Math.floor(millisInDay() / 1000 / 60 / 60) + Math.floor(timeZoneOffset/60);
 }
 
 millisInDay();
@@ -76,12 +77,24 @@ let currentHours = hoursInDay();
 let currentMinutes = minutesInDay();
 let currentSeconds = secondsInDay();  
 
-if (hoursInDay() < 10) {
+if (hoursInDay() < 10 && hoursInDay() >= 0) {
     currentHours = "0" + hoursInDay();
 }
 
-if (minutesInDay() < 10) {
+if (hoursInDay() >= 10 && hoursInDay() < 24) {
+    currentHours = hoursInDay();
+}
+
+if (hoursInDay() < 0) {
+    currentHours = 24 + hoursInDay();
+}
+
+if (minutesInDay() < 10 && minutesInDay() >= 0) {
     currentMinutes = "0" + minutesInDay();
+}
+
+if (minutesInDay() < 0) {
+    currentMinutes = 60 + minutesInDay();
 }
 
 if (secondsInDay() < 10) {
