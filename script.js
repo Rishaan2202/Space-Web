@@ -110,21 +110,23 @@ timeDiv.innerText = currentHours + ":" + currentMinutes + ":" + currentSeconds;
 
 }, 1000);
 
+
 navigator.geolocation.getCurrentPosition(success, error);
 
     function success(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
+        getWeather(latitude, longitude);
         console.log('Latitude: ' + latitude + ', Longitude: ' + longitude);
     }
 
     function error() {
         console.error('Unable to retrieve your location');
-        getElementById('whether').innerText = 'Unable to retrieve your location';
+        document.getElementById('whether').innerText = 'Unable to retrieve your location';
     }
 
 async function getWeather(latitude, longitude) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&current_weather=true&temperature_unit=celcius&wind_speed_unit=kmh`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=relative_humidity_2m`;
     whetherDiv = document.getElementById('whether');
     
     try {
@@ -134,13 +136,17 @@ async function getWeather(latitude, longitude) {
         }
         const result = await response.json();
         console.log(result);
-        console.log(result.current_weather.precipitation);
+        console.log(result.hourly.relative_humidity_2m);
         console.log(result.current_weather.temperature);
-        console.log(result.current_weather.wind_speed); 
+        console.log(result.current_weather.windspeed);
 
-        let precipitation = result.current_weather.precipitation;
+        getLocaleTime = new Date(result.current_weather.time);
+        console.log(getLocaleTime.getHours());
+        let hours = getLocaleTime.getHours();
+
+        let precipitation = result.hourly.relative_humidity_2m[hours];
         let temperature = result.current_weather.temperature;
-        let windSpeed = result.current_weather.wind_speed;
+        let windSpeed = result.current_weather.windspeed;
 
         whetherDiv.innerText = `${precipitation}% ${temperature}°C ${windSpeed} KMH`; 
         
