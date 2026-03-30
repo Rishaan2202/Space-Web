@@ -46,3 +46,28 @@ p{
     margin-top: 20px;
     transform: translateX(-50%);
 }
+
+#joke-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-left: 180px;
+    width: 250px;
+    height: fit-content;
+}
+
+h2{
+    font-size: 5vh;
+    margin: 1vw;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    border-radius: 15px;
+}
+
+h3{
+    font-size: 3.5vh;
+    margin: 1vw;
+    text-align: center;
+}

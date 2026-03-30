@@ -22,17 +22,6 @@ async function getBackground() {
     
 }
 
-window.onload = function () {
-        getBackground().then(function(imageUrl) {
-        if (!imageUrl) return;
-
-        console.log(imageUrl);
-
-        if (background) {
-            background.style.backgroundImage = `url(${imageUrl})`;
-        }
-    });
-}
 
 let dateObject = new Date();
 
@@ -62,16 +51,12 @@ function hoursInDay() {
 }
 
 millisInDay();
-console.log(millisInDay());
 
 secondsInDay();
-console.log(secondsInDay());
 
 minutesInDay();
-console.log(minutesInDay());
 
 hoursInDay();
-console.log(hoursInDay());
 
 let currentHours = hoursInDay();
 let currentMinutes = minutesInDay();
@@ -158,4 +143,55 @@ async function getWeather(latitude, longitude) {
         whetherDiv.innerText = 'Error fetching weather data';
         return null; 
     }
+}
+
+async function getJoke(keyword) {
+    const url = `https://official-joke-api.appspot.com/random_joke`;
+    const jokeDiv = document.getElementById('joke');
+
+    try{
+        const jokeResponse = await fetch(url);
+        if (!jokeResponse.ok) {
+            throw new Error('Response Status: ${jokeResponse.status}');
+        }   
+
+        const jokeResult = await jokeResponse.json();
+        console.log(jokeResult);    
+
+        return jokeResult;
+    }
+
+    catch (error) {
+        jokeDiv.innerText = 'Error fetching joke';
+        console.error('Error fetching the Joke', error);
+        return null;
+    }
+
+}
+
+window.onload = function () {
+
+    jokeDiv = document.getElementById('joke');
+    jokeInput = document.getElementById('joke-input');
+
+        getJoke().then(function(joke) {
+        if (!joke) return;
+
+        console.log(joke);
+
+        if (jokeDiv) {
+            jokeDiv.innerText = joke.setup + " " + joke.punchline;
+        }
+        
+    });
+
+    getBackground().then(function(imageUrl) {
+        if (!imageUrl) return;
+
+        console.log(imageUrl);
+
+        if (background) {
+            background.style.backgroundImage = `url(${imageUrl})`;
+        }
+    });
 }
