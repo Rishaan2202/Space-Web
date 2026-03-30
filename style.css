@@ -23,11 +23,13 @@ p{
 #time{
     font-size: 15vh;
     margin: 1vw;
+    text-align: center;
 }
 
 #whether{
     font-size: 5vh;
     margin: 1vw;
+    text-align: center;
 }
 
 .gloss{
